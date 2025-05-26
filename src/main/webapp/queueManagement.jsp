@@ -157,11 +157,11 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            color: white;
         }
 
         .btn-primary {
             background: var(--primary);
-            color: white;
         }
 
         .btn-primary:hover {
@@ -171,22 +171,18 @@
 
         .btn-success {
             background: var(--success);
-            color: white;
         }
 
         .btn-warning {
             background: var(--warning);
-            color: white;
         }
 
         .btn-danger {
             background: var(--error);
-            color: white;
         }
 
         .btn-secondary {
             background: var(--gray);
-            color: white;
         }
 
         .queue-section {
@@ -326,7 +322,7 @@
 <div class="admin-container">
     <!-- Navigation Breadcrumb -->
     <div class="nav-breadcrumb">
-        <a href="../admin/dashboard"><i class="fas fa-home"></i> Admin Dashboard</a>
+        <a href="dashboard"><i class="fas fa-home"></i> Admin Dashboard</a>
         <span> / </span>
         <span>Queue Management</span>
     </div>
@@ -433,6 +429,20 @@
                 <input type="hidden" name="action" value="clearQueue">
                 <button type="submit" class="btn btn-danger">
                     <i class="fas fa-trash"></i> Clear Queue
+                </button>
+            </form>
+
+            <form action="queueManagement" method="post" style="display: contents;">
+                <input type="hidden" name="action" value="demonstrateSort">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Demonstrate Sort
+                </button>
+            </form>
+
+            <form action="queueManagement" method="post" style="display: contents;">
+                <input type="hidden" name="action" value="sortReservations">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sort-amount-down"></i> Sort All Reservations
                 </button>
             </form>
         </div>
@@ -600,9 +610,13 @@
     document.querySelectorAll('button[type="submit"]').forEach(button => {
         button.addEventListener('click', function() {
             this.disabled = true;
+            const originalText = this.innerHTML;
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            // Re-enable after 3 seconds as fallback
             setTimeout(() => {
                 this.disabled = false;
+                this.innerHTML = originalText;
             }, 3000);
         });
     });

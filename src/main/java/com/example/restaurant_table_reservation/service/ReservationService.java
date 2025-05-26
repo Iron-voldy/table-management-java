@@ -33,14 +33,19 @@ public class ReservationService {
         System.out.println("ReservationService: Loading reservations...");
         try {
             String json = ReservationFileUtils.readReservationsFile();
+            System.out.println("ReservationService: JSON content: " + json);
+
             Type listType = new TypeToken<List<Reservation>>(){}.getType();
             reservationList = gson.fromJson(json, listType);
+
             if (reservationList == null) {
                 reservationList = new ArrayList<>();
+                System.out.println("ReservationService: Created new empty list");
             }
             System.out.println("ReservationService: Loaded " + reservationList.size() + " reservations.");
         } catch (Exception e) {
             System.err.println("Error loading reservations: " + e.getMessage());
+            e.printStackTrace();
             reservationList = new ArrayList<>();
         }
     }
@@ -49,10 +54,12 @@ public class ReservationService {
         System.out.println("ReservationService: Saving reservations...");
         try {
             String json = gson.toJson(reservationList);
+            System.out.println("ReservationService: Saving JSON: " + json);
             ReservationFileUtils.writeReservationsFile(json);
             System.out.println("ReservationService: Successfully saved " + reservationList.size() + " reservations.");
         } catch (Exception e) {
             System.err.println("Error saving reservations: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -63,20 +70,25 @@ public class ReservationService {
     }
 
     public void addReservation(Reservation reservation) {
-        System.out.println("ReservationService: Attempting to add reservation: " + reservation);
+        System.out.println("ReservationService: Adding reservation: " + reservation);
         try {
-            // Assign a new ID
-            int newId = getNextId();
-            reservation.setId(newId);
+            // Assign a new ID if not set
+            if (reservation.getId() == 0) {
+                int newId = getNextId();
+                reservation.setId(newId);
+                System.out.println("ReservationService: Assigned ID: " + newId);
+            }
 
+            // Add to list
             reservationList.add(reservation);
-            System.out.println("ReservationService: Added reservation to list. New size: " + reservationList.size());
+            System.out.println("ReservationService: Added to list. New size: " + reservationList.size());
 
             // Sort reservations by time using merge sort
             sortReservationsByTime();
 
+            // Save to file
             saveReservations();
-            System.out.println("ReservationService: Successfully added and saved reservation with ID: " + newId);
+            System.out.println("ReservationService: Successfully added reservation with ID: " + reservation.getId());
         } catch (Exception e) {
             System.err.println("Error adding reservation: " + e.getMessage());
             e.printStackTrace();
@@ -98,6 +110,7 @@ public class ReservationService {
             System.out.println("ReservationService: Reservation with ID " + updatedReservation.getId() + " not found for update");
         } catch (Exception e) {
             System.err.println("Error updating reservation: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -115,6 +128,7 @@ public class ReservationService {
             }
         } catch (Exception e) {
             System.err.println("Error deleting reservation: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -162,6 +176,11 @@ public class ReservationService {
             // Convert list to array for sorting
             Reservation[] reservationArray = reservationList.toArray(new Reservation[0]);
 
+            System.out.println("Before sorting:");
+            for (int i = 0; i < Math.min(reservationArray.length, 5); i++) {
+                System.out.println("  " + reservationArray[i].getReservationTime());
+            }
+
             // Use custom merge sort
             MergeSort.SortStatistics stats = mergeSort.sortWithStatistics(reservationArray);
 
@@ -171,6 +190,11 @@ public class ReservationService {
                 if (reservation != null) {
                     reservationList.add(reservation);
                 }
+            }
+
+            System.out.println("After sorting:");
+            for (int i = 0; i < Math.min(reservationList.size(), 5); i++) {
+                System.out.println("  " + reservationList.get(i).getReservationTime());
             }
 
             System.out.println("ReservationService: Sorting completed. " + stats.toString());

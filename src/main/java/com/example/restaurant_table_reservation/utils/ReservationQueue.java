@@ -35,6 +35,7 @@ public class ReservationQueue {
                 .create();
         this.mergeSort = new MergeSort();
         loadQueueFromFile();
+        System.out.println("ReservationQueue initialized with maxSize: " + maxSize);
     }
 
     public static synchronized ReservationQueue getInstance(int maxSize) {
@@ -55,6 +56,8 @@ public class ReservationQueue {
      * Add a reservation to the queue (enqueue operation)
      */
     public boolean enqueue(Reservation reservation) {
+        System.out.println("ReservationQueue: Attempting to enqueue reservation: " + reservation);
+
         if (isFull()) {
             System.out.println("Queue is full! Cannot add more reservations.");
             return false;
@@ -63,17 +66,20 @@ public class ReservationQueue {
         // Assign a unique ID if not already set
         if (reservation.getId() == 0) {
             reservation.setId(generateNextId());
+            System.out.println("ReservationQueue: Assigned new ID: " + reservation.getId());
         }
 
         rear = (rear + 1) % maxSize;
         queue[rear] = reservation;
         size++;
 
+        System.out.println("ReservationQueue: Added reservation. New size: " + size);
+
         // Sort the queue by reservation time after adding
         sortQueueByTime();
         saveQueueToFile();
 
-        System.out.println("Reservation added to queue: " + reservation);
+        System.out.println("Reservation added to queue successfully: " + reservation);
         return true;
     }
 
@@ -81,6 +87,8 @@ public class ReservationQueue {
      * Remove a reservation from the queue (dequeue operation)
      */
     public Reservation dequeue() {
+        System.out.println("ReservationQueue: Attempting to dequeue");
+
         if (isEmpty()) {
             System.out.println("Queue is empty! No reservations to remove.");
             return null;
@@ -90,6 +98,8 @@ public class ReservationQueue {
         queue[front] = null;
         front = (front + 1) % maxSize;
         size--;
+
+        System.out.println("ReservationQueue: Dequeued reservation. New size: " + size);
 
         saveQueueToFile();
         System.out.println("Reservation removed from queue: " + reservation);
@@ -136,8 +146,17 @@ public class ReservationQueue {
         int current = front;
 
         for (int i = 0; i < size; i++) {
-            result[index++] = queue[current];
+            if (queue[current] != null) {
+                result[index++] = queue[current];
+            }
             current = (current + 1) % maxSize;
+        }
+
+        // Trim array if needed
+        if (index < result.length) {
+            Reservation[] trimmed = new Reservation[index];
+            System.arraycopy(result, 0, trimmed, 0, index);
+            return trimmed;
         }
 
         return result;
@@ -151,10 +170,13 @@ public class ReservationQueue {
         int current = front;
 
         for (int i = 0; i < size; i++) {
-            result.add(queue[current]);
+            if (queue[current] != null) {
+                result.add(queue[current]);
+            }
             current = (current + 1) % maxSize;
         }
 
+        System.out.println("ReservationQueue: Returning " + result.size() + " reservations as list");
         return result;
     }
 
@@ -162,28 +184,46 @@ public class ReservationQueue {
      * Sort the queue by reservation time using custom merge sort
      */
     private void sortQueueByTime() {
-        if (size <= 1) return;
+        System.out.println("ReservationQueue: Sorting queue by time...");
+
+        if (size <= 1) {
+            System.out.println("ReservationQueue: No sorting needed, size: " + size);
+            return;
+        }
 
         // Create array of current reservations
         Reservation[] reservations = getAllReservations();
 
-        // Sort using custom merge sort
-        mergeSort.sort(reservations, 0, reservations.length - 1);
+        if (reservations.length == 0) {
+            System.out.println("ReservationQueue: No reservations to sort");
+            return;
+        }
+
+        System.out.println("ReservationQueue: Sorting " + reservations.length + " reservations");
+
+        // Use custom merge sort
+        MergeSort.SortStatistics stats = mergeSort.sortWithStatistics(reservations);
 
         // Clear current queue and re-add sorted reservations
         clearQueue();
         for (Reservation reservation : reservations) {
-            addToQueueWithoutSort(reservation);
+            if (reservation != null) {
+                addToQueueWithoutSort(reservation);
+            }
         }
+
+        System.out.println("ReservationQueue: Sorting completed. " + stats.toString());
     }
 
     /**
      * Add reservation without triggering sort (used internally)
      */
     private void addToQueueWithoutSort(Reservation reservation) {
-        rear = (rear + 1) % maxSize;
-        queue[rear] = reservation;
-        size++;
+        if (!isFull()) {
+            rear = (rear + 1) % maxSize;
+            queue[rear] = reservation;
+            size++;
+        }
     }
 
     /**
@@ -202,34 +242,45 @@ public class ReservationQueue {
      * Remove specific reservation by ID
      */
     public boolean removeReservationById(int reservationId) {
+        System.out.println("ReservationQueue: Removing reservation by ID: " + reservationId);
+
         int current = front;
         boolean found = false;
 
+        // Find the reservation
         for (int i = 0; i < size; i++) {
-            if (queue[current].getId() == reservationId) {
-                // Found the reservation, remove it
+            if (queue[current] != null && queue[current].getId() == reservationId) {
                 found = true;
-
-                // Shift all elements after this position
-                int shiftIndex = current;
-                for (int j = i; j < size - 1; j++) {
-                    int nextIndex = (shiftIndex + 1) % maxSize;
-                    queue[shiftIndex] = queue[nextIndex];
-                    shiftIndex = nextIndex;
-                }
-
-                // Clear the last position and adjust rear
-                queue[rear] = null;
-                rear = (rear - 1 + maxSize) % maxSize;
-                size--;
-
-                saveQueueToFile();
                 break;
             }
             current = (current + 1) % maxSize;
         }
 
-        return found;
+        if (!found) {
+            System.out.println("ReservationQueue: Reservation with ID " + reservationId + " not found");
+            return false;
+        }
+
+        // Create new array without the removed reservation
+        List<Reservation> remainingReservations = new ArrayList<>();
+        current = front;
+
+        for (int i = 0; i < size; i++) {
+            if (queue[current] != null && queue[current].getId() != reservationId) {
+                remainingReservations.add(queue[current]);
+            }
+            current = (current + 1) % maxSize;
+        }
+
+        // Clear queue and re-add remaining reservations
+        clearQueue();
+        for (Reservation reservation : remainingReservations) {
+            addToQueueWithoutSort(reservation);
+        }
+
+        saveQueueToFile();
+        System.out.println("ReservationQueue: Successfully removed reservation with ID: " + reservationId);
+        return true;
     }
 
     /**
@@ -257,9 +308,10 @@ public class ReservationQueue {
             List<Reservation> reservationsList = getAllReservationsList();
             String json = gson.toJson(reservationsList);
             QueueFileUtils.writeQueueFile(json);
-            System.out.println("Queue saved to file successfully.");
+            System.out.println("ReservationQueue: Queue saved to file successfully. Size: " + reservationsList.size());
         } catch (Exception e) {
             System.err.println("Error saving queue to file: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -269,23 +321,31 @@ public class ReservationQueue {
     private void loadQueueFromFile() {
         try {
             String json = QueueFileUtils.readQueueFile();
-            if (json != null && !json.trim().equals("[]")) {
+            System.out.println("ReservationQueue: Loading from file. JSON: " + json);
+
+            if (json != null && !json.trim().equals("[]") && !json.trim().isEmpty()) {
                 Type listType = new TypeToken<List<Reservation>>() {}.getType();
                 List<Reservation> reservationsList = gson.fromJson(json, listType);
 
-                if (reservationsList != null) {
+                if (reservationsList != null && !reservationsList.isEmpty()) {
                     clearQueue();
                     for (Reservation reservation : reservationsList) {
                         if (reservation != null) {
                             addToQueueWithoutSort(reservation);
                         }
                     }
-                    sortQueueByTime(); // Sort after loading
-                    System.out.println("Queue loaded from file. Size: " + size);
+                    // Sort after loading
+                    sortQueueByTime();
+                    System.out.println("ReservationQueue: Loaded " + size + " reservations from file");
+                } else {
+                    System.out.println("ReservationQueue: No valid reservations found in file");
                 }
+            } else {
+                System.out.println("ReservationQueue: File is empty or contains empty array");
             }
         } catch (Exception e) {
             System.err.println("Error loading queue from file: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -311,5 +371,42 @@ public class ReservationQueue {
     public String getQueueStatistics() {
         return String.format("Queue Status - Size: %d/%d, Empty: %s, Full: %s",
                 size, maxSize, isEmpty(), isFull());
+    }
+
+    /**
+     * Force sort the queue (public method for admin use)
+     */
+    public void forceSortQueue() {
+        System.out.println("ReservationQueue: Force sorting queue...");
+        sortQueueByTime();
+        saveQueueToFile();
+    }
+
+    /**
+     * Get detailed queue information
+     */
+    public String getDetailedInfo() {
+        StringBuilder info = new StringBuilder();
+        info.append("=== Reservation Queue Details ===\n");
+        info.append("Current Size: ").append(size).append("/").append(maxSize).append("\n");
+        info.append("Front Index: ").append(front).append("\n");
+        info.append("Rear Index: ").append(rear).append("\n");
+        info.append("Is Empty: ").append(isEmpty()).append("\n");
+        info.append("Is Full: ").append(isFull()).append("\n");
+
+        if (!isEmpty()) {
+            Reservation[] reservations = getAllReservations();
+            boolean sorted = mergeSort.isSorted(reservations);
+            info.append("Is Sorted: ").append(sorted).append("\n");
+
+            if (reservations.length > 0) {
+                info.append("First Reservation Time: ").append(reservations[0].getReservationTime()).append("\n");
+                if (reservations.length > 1) {
+                    info.append("Last Reservation Time: ").append(reservations[reservations.length - 1].getReservationTime()).append("\n");
+                }
+            }
+        }
+
+        return info.toString();
     }
 }

@@ -5,6 +5,7 @@ import com.example.restaurant_table_reservation.model.User;
 import com.example.restaurant_table_reservation.model.Table;
 import com.example.restaurant_table_reservation.service.UserService;
 import com.example.restaurant_table_reservation.service.TableService;
+import com.example.restaurant_table_reservation.service.ReservationService;
 import com.example.restaurant_table_reservation.utils.ReservationQueue;
 import com.example.restaurant_table_reservation.utils.MergeSort;
 import com.example.restaurant_table_reservation.utils.QueueFileUtils;
@@ -24,10 +25,13 @@ public class AdminQueueManagementServlet extends HttpServlet {
     private ReservationQueue reservationQueue;
     private UserService userService;
     private TableService tableService;
+    private ReservationService reservationService;
     private MergeSort mergeSort;
 
     @Override
     public void init() throws ServletException {
+        System.out.println("AdminQueueManagementServlet: Initializing...");
+
         // Initialize file utilities
         QueueFileUtils.initialize(getServletContext());
 
@@ -35,6 +39,7 @@ public class AdminQueueManagementServlet extends HttpServlet {
         reservationQueue = ReservationQueue.getInstance(100);
         userService = UserService.getInstance();
         tableService = TableService.getInstance();
+        reservationService = ReservationService.getInstance();
         mergeSort = new MergeSort();
 
         // Store in servlet context
@@ -50,12 +55,27 @@ public class AdminQueueManagementServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("isAdmin") == null ||
                 !(Boolean) session.getAttribute("isAdmin")) {
+            System.out.println("AdminQueueManagementServlet: Non-admin access denied");
             response.sendRedirect("../login.jsp");
             return;
         }
 
-        // Get all reservations in queue
+        System.out.println("AdminQueueManagementServlet: Loading queue management page");
+
+        // Get all reservations from both queue and main service
         List<Reservation> queuedReservations = reservationQueue.getAllReservationsList();
+        List<Reservation> allReservations = reservationService.getAllReservations();
+
+        // If queue is empty but we have reservations, populate queue
+        if (queuedReservations.isEmpty() && !allReservations.isEmpty()) {
+            System.out.println("AdminQueueManagementServlet: Populating queue from reservations");
+            for (Reservation reservation : allReservations) {
+                if ("pending".equals(reservation.getStatus())) {
+                    reservationQueue.enqueue(reservation);
+                }
+            }
+            queuedReservations = reservationQueue.getAllReservationsList();
+        }
 
         // Get queue statistics
         String queueStats = reservationQueue.getQueueStatistics();
@@ -88,6 +108,8 @@ public class AdminQueueManagementServlet extends HttpServlet {
         request.setAttribute("userService", userService);
         request.setAttribute("tableService", tableService);
 
+        System.out.println("AdminQueueManagementServlet: Forwarding to JSP with " + queuedReservations.size() + " reservations");
+
         // Forward to admin queue management JSP
         request.getRequestDispatcher("/queueManagement.jsp").forward(request, response);
     }
@@ -104,6 +126,7 @@ public class AdminQueueManagementServlet extends HttpServlet {
         }
 
         String action = request.getParameter("action");
+        System.out.println("AdminQueueManagementServlet: Processing action: " + action);
 
         try {
             switch (action) {
@@ -125,6 +148,12 @@ public class AdminQueueManagementServlet extends HttpServlet {
                 case "viewStatistics":
                     handleViewStatistics(request, response);
                     break;
+                case "demonstrateSort":
+                    handleDemonstrateSort(request, response);
+                    break;
+                case "sortReservations":
+                    handleSortReservations(request, response);
+                    break;
                 default:
                     request.setAttribute("error", "Unknown action: " + action);
                     break;
@@ -143,6 +172,7 @@ public class AdminQueueManagementServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String reservationIdStr = request.getParameter("reservationId");
+        System.out.println("AdminQueueManagementServlet: Confirming reservation: " + reservationIdStr);
 
         if (reservationIdStr == null) {
             request.setAttribute("error", "Missing reservation ID");
@@ -157,6 +187,8 @@ public class AdminQueueManagementServlet extends HttpServlet {
             for (Reservation reservation : reservations) {
                 if (reservation.getId() == reservationId) {
                     reservation.confirm();
+                    // Update in main service too
+                    reservationService.updateReservation(reservation);
                     // Remove from queue after confirmation
                     reservationQueue.removeReservationById(reservationId);
                     request.setAttribute("message",
@@ -177,6 +209,7 @@ public class AdminQueueManagementServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String reservationIdStr = request.getParameter("reservationId");
+        System.out.println("AdminQueueManagementServlet: Cancelling reservation: " + reservationIdStr);
 
         if (reservationIdStr == null) {
             request.setAttribute("error", "Missing reservation ID");
@@ -191,6 +224,8 @@ public class AdminQueueManagementServlet extends HttpServlet {
             for (Reservation reservation : reservations) {
                 if (reservation.getId() == reservationId) {
                     reservation.cancel();
+                    // Update in main service too
+                    reservationService.updateReservation(reservation);
                     // Remove from queue after cancellation
                     reservationQueue.removeReservationById(reservationId);
                     request.setAttribute("message",
@@ -210,10 +245,14 @@ public class AdminQueueManagementServlet extends HttpServlet {
     private void handleProcessNext(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        System.out.println("AdminQueueManagementServlet: Processing next reservation in queue");
+
         Reservation nextReservation = reservationQueue.dequeue();
 
         if (nextReservation != null) {
             nextReservation.confirm();
+            // Update in main service
+            reservationService.updateReservation(nextReservation);
             request.setAttribute("message",
                     "Processed next reservation: " + nextReservation.getCustomerName());
             System.out.println("Admin processed next reservation: " + nextReservation);
@@ -224,6 +263,8 @@ public class AdminQueueManagementServlet extends HttpServlet {
 
     private void handleReorderQueue(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        System.out.println("AdminQueueManagementServlet: Reordering queue using merge sort");
 
         // Get all reservations from queue
         Reservation[] reservations = reservationQueue.getAllReservations();
@@ -243,16 +284,20 @@ public class AdminQueueManagementServlet extends HttpServlet {
 
         // Re-add sorted reservations to queue
         for (Reservation reservation : reservations) {
-            reservationQueue.enqueue(reservation);
+            if (reservation != null) {
+                reservationQueue.enqueue(reservation);
+            }
         }
 
         request.setAttribute("message",
-                String.format("Queue reordered successfully! %s", stats.toString()));
+                String.format("Queue reordered successfully using Merge Sort! %s", stats.toString()));
         System.out.println("Admin reordered queue: " + stats);
     }
 
     private void handleClearQueue(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        System.out.println("AdminQueueManagementServlet: Clearing queue");
 
         int clearedCount = reservationQueue.getSize();
 
@@ -268,6 +313,8 @@ public class AdminQueueManagementServlet extends HttpServlet {
 
     private void handleViewStatistics(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        System.out.println("AdminQueueManagementServlet: Generating statistics");
 
         // Generate comprehensive statistics
         List<Reservation> reservations = reservationQueue.getAllReservationsList();
@@ -302,6 +349,34 @@ public class AdminQueueManagementServlet extends HttpServlet {
         );
 
         request.setAttribute("message", statisticsMessage);
-        System.out.println("Queue statistics requested: " + statisticsMessage);
+        System.out.println("Queue statistics: " + statisticsMessage);
+    }
+
+    private void handleDemonstrateSort(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        System.out.println("AdminQueueManagementServlet: Demonstrating merge sort");
+
+        // Use the reservation service to demonstrate sort
+        reservationService.demonstrateMergeSort();
+
+        request.setAttribute("message",
+                "Merge Sort demonstration completed! Check server logs for detailed output.");
+    }
+
+    private void handleSortReservations(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        System.out.println("AdminQueueManagementServlet: Sorting all reservations using merge sort");
+
+        // Sort reservations in the main service
+        reservationService.sortReservationsByTime();
+
+        // Also sort the queue
+        handleReorderQueue(request, response);
+
+        request.setAttribute("message",
+                "All reservations sorted by time using Merge Sort algorithm!");
+        System.out.println("All reservations sorted successfully");
     }
 }

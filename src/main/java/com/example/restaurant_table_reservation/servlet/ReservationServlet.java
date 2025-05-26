@@ -24,20 +24,26 @@ public class ReservationServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        System.out.println("ReservationServlet: Initializing...");
         // Initialize file utilities
         ReservationFileUtils.initialize(getServletContext());
 
         // Initialize services
         tableService = TableService.getInstance();
         reservationService = ReservationService.getInstance();
+
+        System.out.println("ReservationServlet: Initialization complete");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        System.out.println("ReservationServlet: Processing reservation request");
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
+            System.out.println("ReservationServlet: User not logged in");
             response.sendRedirect("login.jsp");
             return;
         }
@@ -47,9 +53,12 @@ public class ReservationServlet extends HttpServlet {
             String tableIdStr = request.getParameter("tableId");
             String reservationTimeStr = request.getParameter("reservationTime");
 
+            System.out.println("ReservationServlet: Received - tableId: " + tableIdStr + ", time: " + reservationTimeStr);
+
             if (tableIdStr == null || reservationTimeStr == null) {
+                System.out.println("ReservationServlet: Missing required parameters");
                 request.setAttribute("error", "Missing required parameters");
-                request.getRequestDispatcher("userTables.jsp").forward(request, response);
+                request.getRequestDispatcher("userTables").forward(request, response);
                 return;
             }
 
@@ -57,42 +66,49 @@ public class ReservationServlet extends HttpServlet {
             int userId = (int) session.getAttribute("userId");
             String username = (String) session.getAttribute("username");
 
+            System.out.println("ReservationServlet: Processing for userId: " + userId + ", username: " + username);
+
             // Validate reservation time
             LocalDateTime reservationTime = LocalDateTime.parse(reservationTimeStr,
                     DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             LocalDateTime now = LocalDateTime.now();
 
             if (reservationTime.isBefore(now)) {
+                System.out.println("ReservationServlet: Reservation time is in the past");
                 request.setAttribute("error", "Cannot make reservations for past times");
-                request.getRequestDispatcher("userTables.jsp").forward(request, response);
+                request.getRequestDispatcher("userTables").forward(request, response);
                 return;
             }
 
             // Get the table
             Table table = tableService.getTableById(tableId);
             if (table == null) {
+                System.out.println("ReservationServlet: Table not found");
                 request.setAttribute("error", "Table not found");
-                request.getRequestDispatcher("userTables.jsp").forward(request, response);
+                request.getRequestDispatcher("userTables").forward(request, response);
                 return;
             }
 
             if (!table.isAvailable()) {
+                System.out.println("ReservationServlet: Table is not available");
                 request.setAttribute("error", "Table is no longer available");
-                request.getRequestDispatcher("userTables.jsp").forward(request, response);
+                request.getRequestDispatcher("userTables").forward(request, response);
                 return;
             }
 
-            // Create reservation
+            // Create reservation with proper constructor
             Reservation newReservation = new Reservation();
             newReservation.setUserId(userId);
             newReservation.setTableId(tableId);
             newReservation.setReservationTime(reservationTimeStr);
-            newReservation.setCustomerName(username);
+            newReservation.setCustomerName(username != null ? username : "Guest User");
             newReservation.setStatus("confirmed");
 
-            // Add reservation to service (this will trigger merge sort)
+            System.out.println("ReservationServlet: Created reservation: " + newReservation);
+
+            // Add reservation to service (this will trigger merge sort and save to file)
             reservationService.addReservation(newReservation);
-            System.out.println("Reservation added successfully: " + newReservation);
+            System.out.println("ReservationServlet: Reservation added successfully");
 
             // Update table availability
             tableService.updateTable(
@@ -102,23 +118,24 @@ public class ReservationServlet extends HttpServlet {
                     false, // Set to not available
                     table.getCategory()
             );
+            System.out.println("ReservationServlet: Table availability updated");
 
             // Set success message
             String formattedTime = reservationTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' HH:mm"));
             request.setAttribute("message", "Table " + table.getNumber() + " reserved successfully for " + formattedTime);
 
-            System.out.println("Table reservation completed successfully");
+            System.out.println("ReservationServlet: Table reservation completed successfully");
             response.sendRedirect("userTables");
 
         } catch (NumberFormatException e) {
-            System.err.println("Invalid table ID format: " + e.getMessage());
+            System.err.println("ReservationServlet: Invalid table ID format: " + e.getMessage());
             request.setAttribute("error", "Invalid table ID");
-            request.getRequestDispatcher("userTables.jsp").forward(request, response);
+            request.getRequestDispatcher("userTables").forward(request, response);
         } catch (Exception e) {
-            System.err.println("Error processing reservation: " + e.getMessage());
+            System.err.println("ReservationServlet: Error processing reservation: " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("error", "Error processing reservation: " + e.getMessage());
-            request.getRequestDispatcher("userTables.jsp").forward(request, response);
+            request.getRequestDispatcher("userTables").forward(request, response);
         }
     }
 }

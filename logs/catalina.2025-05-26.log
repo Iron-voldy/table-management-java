@@ -154,3 +154,123 @@
 26-May-2025 22:14:35.327 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of deployment descriptor [C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\conf\Catalina\localhost\Restaurant_Table_Reservation.xml] has finished in [1,050] ms
 26-May-2025 22:14:35.330 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
 26-May-2025 22:14:35.357 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [1141] milliseconds
+26-May-2025 22:46:39.090 INFO [Thread-1] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:46:39.116 INFO [Thread-1] org.apache.catalina.core.StandardService.stopInternal Stopping service [Catalina]
+26-May-2025 22:46:39.271 INFO [Thread-1] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:46:39.285 INFO [Thread-1] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:46:43.133 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.1.41
+26-May-2025 22:46:43.138 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          May 8 2025 12:44:02 UTC
+26-May-2025 22:46:43.138 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.1.41.0
+26-May-2025 22:46:43.138 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Windows 11
+26-May-2025 22:46:43.138 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            10.0
+26-May-2025 22:46:43.138 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+26-May-2025 22:46:43.138 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             C:\Program Files\Java\jdk-23
+26-May-2025 22:46:43.138 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           23+37-2369
+26-May-2025 22:46:43.139 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+26-May-2025 22:46:43.139 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2
+26-May-2025 22:46:43.139 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         C:\apache-tomcat-10.1.41-windows-x64\apache-tomcat-10.1.41
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.io=ALL-UNNAMED
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util=ALL-UNNAMED
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=C:\apache-tomcat-10.1.41-windows-x64\apache-tomcat-10.1.41
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\temp
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\conf\logging.properties
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+26-May-2025 22:46:43.148 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3.3\lib\idea_rt.jar=59922:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3.3\bin
+26-May-2025 22:46:43.149 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dfile.encoding=UTF-8
+26-May-2025 22:46:43.149 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.stdout.encoding=UTF-8
+26-May-2025 22:46:43.149 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.stderr.encoding=UTF-8
+26-May-2025 22:46:43.153 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [2.0.8] using APR version [1.7.4].
+26-May-2025 22:46:43.175 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 3.0.14 4 Jun 2024]
+26-May-2025 22:46:43.529 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:46:43.550 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [627] milliseconds
+26-May-2025 22:46:43.621 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+26-May-2025 22:46:43.622 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.1.41]
+26-May-2025 22:46:43.634 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deploying deployment descriptor [C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\conf\Catalina\localhost\Restaurant_Table_Reservation.xml]
+26-May-2025 22:46:44.549 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+26-May-2025 22:46:44.794 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of deployment descriptor [C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\conf\Catalina\localhost\Restaurant_Table_Reservation.xml] has finished in [1,160] ms
+26-May-2025 22:46:44.799 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:46:44.851 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [1299] milliseconds
+26-May-2025 22:51:50.728 INFO [Thread-1] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:51:50.759 INFO [Thread-1] org.apache.catalina.core.StandardService.stopInternal Stopping service [Catalina]
+26-May-2025 22:51:50.913 INFO [Thread-1] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:51:50.934 INFO [Thread-1] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:51:53.501 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.1.41
+26-May-2025 22:51:53.506 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          May 8 2025 12:44:02 UTC
+26-May-2025 22:51:53.506 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.1.41.0
+26-May-2025 22:51:53.506 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Windows 11
+26-May-2025 22:51:53.506 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            10.0
+26-May-2025 22:51:53.506 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+26-May-2025 22:51:53.506 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             C:\Program Files\Java\jdk-23
+26-May-2025 22:51:53.506 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           23+37-2369
+26-May-2025 22:51:53.506 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+26-May-2025 22:51:53.507 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2
+26-May-2025 22:51:53.507 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         C:\apache-tomcat-10.1.41-windows-x64\apache-tomcat-10.1.41
+26-May-2025 22:51:53.515 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+26-May-2025 22:51:53.515 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.io=ALL-UNNAMED
+26-May-2025 22:51:53.515 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util=ALL-UNNAMED
+26-May-2025 22:51:53.515 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+26-May-2025 22:51:53.515 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+26-May-2025 22:51:53.516 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=C:\apache-tomcat-10.1.41-windows-x64\apache-tomcat-10.1.41
+26-May-2025 22:51:53.516 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2
+26-May-2025 22:51:53.516 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\temp
+26-May-2025 22:51:53.516 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\conf\logging.properties
+26-May-2025 22:51:53.516 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+26-May-2025 22:51:53.516 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3.3\lib\idea_rt.jar=60054:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3.3\bin
+26-May-2025 22:51:53.516 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dfile.encoding=UTF-8
+26-May-2025 22:51:53.516 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.stdout.encoding=UTF-8
+26-May-2025 22:51:53.516 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.stderr.encoding=UTF-8
+26-May-2025 22:51:53.521 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [2.0.8] using APR version [1.7.4].
+26-May-2025 22:51:53.542 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 3.0.14 4 Jun 2024]
+26-May-2025 22:51:53.917 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:51:53.936 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [642] milliseconds
+26-May-2025 22:51:54.000 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+26-May-2025 22:51:54.001 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.1.41]
+26-May-2025 22:51:54.015 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deploying deployment descriptor [C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\conf\Catalina\localhost\Restaurant_Table_Reservation.xml]
+26-May-2025 22:51:54.855 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+26-May-2025 22:51:55.099 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of deployment descriptor [C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\conf\Catalina\localhost\Restaurant_Table_Reservation.xml] has finished in [1,082] ms
+26-May-2025 22:51:55.104 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:51:55.137 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [1200] milliseconds
+26-May-2025 22:54:09.777 INFO [Thread-1] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:54:09.782 INFO [Thread-1] org.apache.catalina.core.StandardService.stopInternal Stopping service [Catalina]
+26-May-2025 22:54:09.802 INFO [Thread-1] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:54:09.819 INFO [Thread-1] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:54:11.599 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.1.41
+26-May-2025 22:54:11.603 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          May 8 2025 12:44:02 UTC
+26-May-2025 22:54:11.603 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.1.41.0
+26-May-2025 22:54:11.603 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Windows 11
+26-May-2025 22:54:11.603 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            10.0
+26-May-2025 22:54:11.603 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+26-May-2025 22:54:11.603 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             C:\Program Files\Java\jdk-23
+26-May-2025 22:54:11.604 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           23+37-2369
+26-May-2025 22:54:11.604 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+26-May-2025 22:54:11.604 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2
+26-May-2025 22:54:11.604 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         C:\apache-tomcat-10.1.41-windows-x64\apache-tomcat-10.1.41
+26-May-2025 22:54:11.612 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+26-May-2025 22:54:11.612 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.io=ALL-UNNAMED
+26-May-2025 22:54:11.612 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util=ALL-UNNAMED
+26-May-2025 22:54:11.612 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+26-May-2025 22:54:11.612 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+26-May-2025 22:54:11.612 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=C:\apache-tomcat-10.1.41-windows-x64\apache-tomcat-10.1.41
+26-May-2025 22:54:11.613 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2
+26-May-2025 22:54:11.613 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\temp
+26-May-2025 22:54:11.613 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\conf\logging.properties
+26-May-2025 22:54:11.613 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+26-May-2025 22:54:11.613 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3.3\lib\idea_rt.jar=60102:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3.3\bin
+26-May-2025 22:54:11.613 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dfile.encoding=UTF-8
+26-May-2025 22:54:11.613 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.stdout.encoding=UTF-8
+26-May-2025 22:54:11.613 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.stderr.encoding=UTF-8
+26-May-2025 22:54:11.616 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [2.0.8] using APR version [1.7.4].
+26-May-2025 22:54:11.621 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 3.0.14 4 Jun 2024]
+26-May-2025 22:54:11.973 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:54:11.991 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [587] milliseconds
+26-May-2025 22:54:12.063 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+26-May-2025 22:54:12.063 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.1.41]
+26-May-2025 22:54:12.076 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deploying deployment descriptor [C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\conf\Catalina\localhost\Restaurant_Table_Reservation.xml]
+26-May-2025 22:54:12.911 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+26-May-2025 22:54:13.137 INFO [main] org.apache.catalina.startup.HostConfig.deployDescriptor Deployment of deployment descriptor [C:\Users\yasir\IdeaProjects\Restaurant-Table-Reservation-Platform-main-2\conf\Catalina\localhost\Restaurant_Table_Reservation.xml] has finished in [1,060] ms
+26-May-2025 22:54:13.142 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+26-May-2025 22:54:13.177 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [1183] milliseconds

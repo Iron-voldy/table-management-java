@@ -27,6 +27,8 @@ public class UserTablesServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
+            System.out.println("UserTablesServlet: Initializing...");
+
             // Initialize file utilities
             TableFileUtils.initialize(getServletContext());
             ReservationFileUtils.initialize(getServletContext());
@@ -59,6 +61,8 @@ public class UserTablesServlet extends HttpServlet {
         }
 
         try {
+            System.out.println("UserTablesServlet: Loading tables for user");
+
             // Get all tables and convert to List for easier handling
             Table[] tablesArray = tableService.getAllTables();
             List<Table> tables = new ArrayList<>();
@@ -76,6 +80,9 @@ public class UserTablesServlet extends HttpServlet {
 
             // Add some debug info
             System.out.println("UserTablesServlet: Loaded " + tables.size() + " tables");
+            for (Table table : tables) {
+                System.out.println("  Table " + table.getNumber() + " - Available: " + table.isAvailable());
+            }
 
             // Forward to JSP
             request.getRequestDispatcher("userTables.jsp").forward(request, response);
@@ -99,6 +106,7 @@ public class UserTablesServlet extends HttpServlet {
         }
 
         String action = request.getParameter("action");
+        System.out.println("UserTablesServlet: Processing action: " + action);
 
         try {
             if ("reserve".equals(action)) {
@@ -122,6 +130,8 @@ public class UserTablesServlet extends HttpServlet {
             String tableIdStr = request.getParameter("tableId");
             String reservationTimeStr = request.getParameter("reservationTime");
 
+            System.out.println("UserTablesServlet: Handling reservation - tableId: " + tableIdStr + ", time: " + reservationTimeStr);
+
             if (tableIdStr == null || reservationTimeStr == null) {
                 request.setAttribute("error", "Missing reservation parameters");
                 doGet(request, response);
@@ -132,15 +142,19 @@ public class UserTablesServlet extends HttpServlet {
             int userId = (int) session.getAttribute("userId");
             String username = (String) session.getAttribute("username");
 
+            System.out.println("UserTablesServlet: Reservation for userId: " + userId + ", username: " + username);
+
             // Get the table
             Table table = tableService.getTableById(tableId);
             if (table == null) {
+                System.out.println("UserTablesServlet: Table not found");
                 request.setAttribute("error", "Table not found");
                 doGet(request, response);
                 return;
             }
 
             if (!table.isAvailable()) {
+                System.out.println("UserTablesServlet: Table is not available");
                 request.setAttribute("error", "Table is no longer available");
                 doGet(request, response);
                 return;
@@ -153,6 +167,8 @@ public class UserTablesServlet extends HttpServlet {
             newReservation.setReservationTime(reservationTimeStr);
             newReservation.setCustomerName(username != null ? username : "Guest");
             newReservation.setStatus("confirmed");
+
+            System.out.println("UserTablesServlet: Creating reservation: " + newReservation);
 
             // Add reservation (this will trigger merge sort)
             reservationService.addReservation(newReservation);

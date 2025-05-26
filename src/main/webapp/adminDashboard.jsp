@@ -340,8 +340,8 @@
                 <li><a href="#"><i class="fas fa-clipboard-list"></i> Orders</a></li>
                 <li><a href="#"><i class="fas fa-chair"></i> Tables</a></li>
 
-                <!-- NEW QUEUE MANAGEMENT LINK -->
-                <li><a href="admin/queueManagement"><i class="fas fa-clock"></i> Queue Management</a></li>
+                <!-- FIXED QUEUE MANAGEMENT LINK -->
+                <li><a href="${pageContext.request.contextPath}/admin/queueManagement"><i class="fas fa-clock"></i> Queue Management</a></li>
 
                 <li><a href="#"><i class="fas fa-utensils"></i> Menu</a></li>
                 <li><a href="#"><i class="fas fa-comment-alt"></i> Feedback</a></li>
@@ -402,6 +402,30 @@
                     </div>
                 </div>
                 <h2>$<%= String.format("%.2f", todaysRevenue) %></h2>
+            </div>
+        </div>
+
+        <!-- Quick Actions Section -->
+        <div class="content-section">
+            <div class="section-header">
+                <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <a href="${pageContext.request.contextPath}/admin/queueManagement" style="padding: 1rem; background-color: var(--primary); color: white; border-radius: 8px; text-decoration: none; font-weight: 500; text-align: center; transition: all 0.3s;">
+                    <i class="fas fa-clock"></i> Queue Management
+                </a>
+                <form action="${pageContext.request.contextPath}/admin/dashboard" method="post" style="display: contents;">
+                    <input type="hidden" name="action" value="sortReservations">
+                    <button type="submit" style="padding: 1rem; background-color: var(--success); color: white; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.3s;">
+                        <i class="fas fa-sort"></i> Sort Reservations
+                    </button>
+                </form>
+                <form action="${pageContext.request.contextPath}/admin/dashboard" method="post" style="display: contents;">
+                    <input type="hidden" name="action" value="demonstrateSort">
+                    <button type="submit" style="padding: 1rem; background-color: var(--warning); color: white; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.3s;">
+                        <i class="fas fa-play"></i> Demo Merge Sort
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -504,7 +528,7 @@
 <script>
     async function fetchReservations() {
         try {
-            const response = await fetch('api/admin/reservations');
+            const response = await fetch('${pageContext.request.contextPath}/api/admin/reservations');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

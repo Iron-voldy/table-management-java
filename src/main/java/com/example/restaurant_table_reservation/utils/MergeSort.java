@@ -109,7 +109,9 @@ public class MergeSort {
             LocalDateTime dateTime1 = parseReservationTime(time1);
             LocalDateTime dateTime2 = parseReservationTime(time2);
 
-            return dateTime1.compareTo(dateTime2);
+            int result = dateTime1.compareTo(dateTime2);
+            System.out.println("Comparing: " + time1 + " vs " + time2 + " = " + result);
+            return result;
         } catch (Exception e) {
             System.err.println("Error comparing reservation times: " + e.getMessage());
             // Fallback to string comparison
@@ -128,11 +130,17 @@ public class MergeSort {
         }
 
         try {
-            // Try ISO format first (yyyy-MM-ddTHH:mm:ss or yyyy-MM-ddTHH:mm)
+            // Clean the time string
+            timeString = timeString.trim();
+
+            // Handle ISO format with T separator (yyyy-MM-ddTHH:mm or yyyy-MM-ddTHH:mm:ss)
             if (timeString.contains("T")) {
                 if (timeString.length() == 16) { // yyyy-MM-ddTHH:mm
                     return LocalDateTime.parse(timeString, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+                } else if (timeString.length() == 19) { // yyyy-MM-ddTHH:mm:ss
+                    return LocalDateTime.parse(timeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 } else {
+                    // Try standard ISO format
                     return LocalDateTime.parse(timeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 }
             }
@@ -143,7 +151,9 @@ public class MergeSort {
                     "yyyy-MM-dd HH:mm",
                     "dd/MM/yyyy HH:mm",
                     "MM/dd/yyyy HH:mm",
-                    "yyyy/MM/dd HH:mm"
+                    "yyyy/MM/dd HH:mm",
+                    "dd-MM-yyyy HH:mm",
+                    "MM-dd-yyyy HH:mm"
             };
 
             for (String format : formats) {
@@ -155,11 +165,11 @@ public class MergeSort {
             }
 
             // If all parsing attempts fail, use current time
-            System.err.println("Could not parse time string: " + timeString + ". Using current time.");
+            System.err.println("Could not parse time string: '" + timeString + "'. Using current time.");
             return LocalDateTime.now();
 
         } catch (Exception e) {
-            System.err.println("Error parsing reservation time: " + e.getMessage());
+            System.err.println("Error parsing reservation time '" + timeString + "': " + e.getMessage());
             return LocalDateTime.now();
         }
     }
@@ -173,18 +183,39 @@ public class MergeSort {
         long startTime = System.nanoTime();
         comparisons = 0; // Reset comparison counter
 
+        System.out.println("Starting merge sort with " + (reservations != null ? reservations.length : 0) + " reservations");
+
         if (reservations != null && reservations.length > 0) {
+            // Print before sorting
+            System.out.println("Before sorting:");
+            for (int i = 0; i < Math.min(reservations.length, 5); i++) {
+                if (reservations[i] != null) {
+                    System.out.println("  [" + i + "] " + reservations[i].getReservationTime());
+                }
+            }
+
             sort(reservations, 0, reservations.length - 1);
+
+            // Print after sorting
+            System.out.println("After sorting:");
+            for (int i = 0; i < Math.min(reservations.length, 5); i++) {
+                if (reservations[i] != null) {
+                    System.out.println("  [" + i + "] " + reservations[i].getReservationTime());
+                }
+            }
         }
 
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
 
-        return new SortStatistics(
+        SortStatistics stats = new SortStatistics(
                 reservations != null ? reservations.length : 0,
                 comparisons,
                 duration / 1_000_000.0 // Convert to milliseconds
         );
+
+        System.out.println("Sorting completed: " + stats.toString());
+        return stats;
     }
 
     /**
@@ -200,10 +231,13 @@ public class MergeSort {
         for (int i = 0; i < reservations.length - 1; i++) {
             if (reservations[i] != null && reservations[i + 1] != null) {
                 if (compareReservationTimes(reservations[i], reservations[i + 1]) > 0) {
+                    System.out.println("Array is NOT sorted at index " + i + ": " +
+                            reservations[i].getReservationTime() + " > " + reservations[i + 1].getReservationTime());
                     return false;
                 }
             }
         }
+        System.out.println("Array is properly sorted");
         return true;
     }
 
@@ -223,7 +257,11 @@ public class MergeSort {
         analysis.append("Is Sorted: ").append(isSorted(reservations)).append("\n");
 
         if (reservations.length > 1) {
-            SortStatistics stats = sortWithStatistics(reservations.clone());
+            // Create a copy for analysis to avoid modifying original
+            Reservation[] copy = new Reservation[reservations.length];
+            System.arraycopy(reservations, 0, copy, 0, reservations.length);
+
+            SortStatistics stats = sortWithStatistics(copy);
             analysis.append("Sort Performance: ").append(stats.toString()).append("\n");
         }
 
