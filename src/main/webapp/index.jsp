@@ -294,15 +294,21 @@
   </section>
 
   <div class="action-buttons">
-    <a href="userTables" class="btn btn-primary">
-      <i class="fas fa-bookmark"></i> Reserve a Table
-    </a>
-    <a href="categoryMenu" class="btn btn-secondary">
-      <i class="fas fa-book-open"></i> View Menu
-    </a>
-    <a href="login.jsp" class="btn btn-outline">
-      <i class="fas fa-sign-in-alt"></i> Customer Login
-    </a>
+      <!-- Existing buttons -->
+      <a href="userTables" class="btn btn-primary">
+          <i class="fas fa-bookmark"></i> Reserve a Table
+      </a>
+      <a href="categoryMenu" class="btn btn-secondary">
+          <i class="fas fa-book-open"></i> View Menu
+      </a>
+
+      <!-- NEW QUEUE BUTTONS -->
+      <a href="reservationQueue" class="btn btn-warning">
+          <i class="fas fa-clock"></i> Queue Management
+      </a>
+      <a href="login.jsp" class="btn btn-outline">
+          <i class="fas fa-sign-in-alt"></i> Customer Login
+      </a>
   </div>
 
   <div class="action-buttons">

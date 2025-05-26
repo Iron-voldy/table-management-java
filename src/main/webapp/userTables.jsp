@@ -123,5 +123,15 @@
     %>
     </tbody>
 </table>
+
+<!-- Add this after the existing table content -->
+<div style="text-align: center; margin-top: 30px;">
+    <a href="reservationQueue" class="btn btn-warning" style="padding: 12px 24px; font-size: 16px;">
+        <i class="fas fa-clock"></i> View Reservation Queue
+    </a>
+    <p style="margin-top: 10px; color: #666; font-size: 14px;">
+        Check queue status and manage your reservations
+    </p>
+</div>
 </body>
 </html>

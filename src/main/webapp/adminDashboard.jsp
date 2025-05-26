@@ -332,16 +332,19 @@
         <div class="admin-brand">
             <h1><i class="fas fa-utensils"></i> Restaurant Admin</h1>
         </div>
+        <!-- In the sidebar navigation -->
         <nav class="admin-nav">
             <ul>
                 <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="#"><i class="fas fa-users"></i> Users</a></li>
                 <li><a href="#"><i class="fas fa-clipboard-list"></i> Orders</a></li>
                 <li><a href="#"><i class="fas fa-chair"></i> Tables</a></li>
+
+                <!-- NEW QUEUE MANAGEMENT LINK -->
+                <li><a href="admin/queueManagement"><i class="fas fa-clock"></i> Queue Management</a></li>
+
                 <li><a href="#"><i class="fas fa-utensils"></i> Menu</a></li>
                 <li><a href="#"><i class="fas fa-comment-alt"></i> Feedback</a></li>
-                <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
             </ul>
         </nav>
     </aside>
