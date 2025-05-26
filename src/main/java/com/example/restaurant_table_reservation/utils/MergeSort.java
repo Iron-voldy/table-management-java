@@ -5,10 +5,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Custom Merge Sort implementation for sorting reservations by time
+ * Enhanced Merge Sort implementation for sorting reservations by time
  * Implements merge sort algorithm from scratch without using Java Collections
  */
 public class MergeSort {
+    private int comparisons = 0;
 
     /**
      * Main sort method - sorts reservations by reservation time
@@ -60,6 +61,7 @@ public class MergeSort {
         int k = left; // Initial index of merged subarray
 
         while (i < leftSize && j < rightSize) {
+            comparisons++;
             if (compareReservationTimes(leftArray[i], rightArray[j]) <= 0) {
                 reservations[k] = leftArray[i];
                 i++;
@@ -96,15 +98,22 @@ public class MergeSort {
         if (r1 == null) return 1;
         if (r2 == null) return -1;
 
-        try {
-            LocalDateTime time1 = parseReservationTime(r1.getReservationTime());
-            LocalDateTime time2 = parseReservationTime(r2.getReservationTime());
+        String time1 = r1.getReservationTime();
+        String time2 = r2.getReservationTime();
 
-            return time1.compareTo(time2);
+        if (time1 == null && time2 == null) return 0;
+        if (time1 == null) return 1;
+        if (time2 == null) return -1;
+
+        try {
+            LocalDateTime dateTime1 = parseReservationTime(time1);
+            LocalDateTime dateTime2 = parseReservationTime(time2);
+
+            return dateTime1.compareTo(dateTime2);
         } catch (Exception e) {
             System.err.println("Error comparing reservation times: " + e.getMessage());
             // Fallback to string comparison
-            return r1.getReservationTime().compareTo(r2.getReservationTime());
+            return time1.compareTo(time2);
         }
     }
 
@@ -114,10 +123,18 @@ public class MergeSort {
      * @return LocalDateTime object
      */
     private LocalDateTime parseReservationTime(String timeString) {
+        if (timeString == null || timeString.trim().isEmpty()) {
+            return LocalDateTime.now();
+        }
+
         try {
-            // Try ISO format first (yyyy-MM-ddTHH:mm:ss)
+            // Try ISO format first (yyyy-MM-ddTHH:mm:ss or yyyy-MM-ddTHH:mm)
             if (timeString.contains("T")) {
-                return LocalDateTime.parse(timeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                if (timeString.length() == 16) { // yyyy-MM-ddTHH:mm
+                    return LocalDateTime.parse(timeString, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+                } else {
+                    return LocalDateTime.parse(timeString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                }
             }
 
             // Try other common formats
@@ -125,7 +142,8 @@ public class MergeSort {
                     "yyyy-MM-dd HH:mm:ss",
                     "yyyy-MM-dd HH:mm",
                     "dd/MM/yyyy HH:mm",
-                    "MM/dd/yyyy HH:mm"
+                    "MM/dd/yyyy HH:mm",
+                    "yyyy/MM/dd HH:mm"
             };
 
             for (String format : formats) {
@@ -153,7 +171,7 @@ public class MergeSort {
      */
     public SortStatistics sortWithStatistics(Reservation[] reservations) {
         long startTime = System.nanoTime();
-        int comparisons = 0;
+        comparisons = 0; // Reset comparison counter
 
         if (reservations != null && reservations.length > 0) {
             sort(reservations, 0, reservations.length - 1);
@@ -180,11 +198,47 @@ public class MergeSort {
         }
 
         for (int i = 0; i < reservations.length - 1; i++) {
-            if (compareReservationTimes(reservations[i], reservations[i + 1]) > 0) {
-                return false;
+            if (reservations[i] != null && reservations[i + 1] != null) {
+                if (compareReservationTimes(reservations[i], reservations[i + 1]) > 0) {
+                    return false;
+                }
             }
         }
         return true;
+    }
+
+    /**
+     * Get detailed sorting analysis
+     * @param reservations Array to analyze
+     * @return Analysis string
+     */
+    public String analyzeSorting(Reservation[] reservations) {
+        if (reservations == null || reservations.length == 0) {
+            return "No reservations to analyze";
+        }
+
+        StringBuilder analysis = new StringBuilder();
+        analysis.append("=== Merge Sort Analysis ===\n");
+        analysis.append("Total Reservations: ").append(reservations.length).append("\n");
+        analysis.append("Is Sorted: ").append(isSorted(reservations)).append("\n");
+
+        if (reservations.length > 1) {
+            SortStatistics stats = sortWithStatistics(reservations.clone());
+            analysis.append("Sort Performance: ").append(stats.toString()).append("\n");
+        }
+
+        analysis.append("Time Range: ");
+        if (reservations.length > 0) {
+            Reservation first = reservations[0];
+            Reservation last = reservations[reservations.length - 1];
+            if (first != null && last != null) {
+                analysis.append(first.getFormattedReservationTime())
+                        .append(" to ")
+                        .append(last.getFormattedReservationTime());
+            }
+        }
+
+        return analysis.toString();
     }
 
     /**
@@ -210,38 +264,61 @@ public class MergeSort {
             return String.format("Sort Statistics - Elements: %d, Comparisons: %d, Time: %.2f ms",
                     elementsCount, comparisons, durationMs);
         }
+
+        public String getDetailedString() {
+            return String.format(
+                    "Merge Sort Results:\n" +
+                            "- Elements Sorted: %d\n" +
+                            "- Comparisons Made: %d\n" +
+                            "- Time Taken: %.2f ms\n" +
+                            "- Time Complexity: O(n log n)\n" +
+                            "- Space Complexity: O(n)",
+                    elementsCount, comparisons, durationMs
+            );
+        }
     }
 
     /**
-     * Demo method to show sorting functionality
+     * Demo method to show sorting functionality with sample data
      */
     public static void demonstrateSorting() {
         System.out.println("=== Merge Sort Demonstration ===");
 
-        // Create sample reservations
+        // Create sample reservations with different times
         Reservation[] testReservations = {
-                new Reservation(1, 101, 1, "2025-05-26T18:00:00"),
-                new Reservation(2, 102, 2, "2025-05-26T12:00:00"),
-                new Reservation(3, 103, 3, "2025-05-26T15:30:00"),
-                new Reservation(4, 104, 1, "2025-05-26T09:00:00"),
-                new Reservation(5, 105, 3, "2025-05-26T20:00:00")
+                createSampleReservation(1, "2025-05-26T18:00"),
+                createSampleReservation(2, "2025-05-26T12:00"),
+                createSampleReservation(3, "2025-05-26T15:30"),
+                createSampleReservation(4, "2025-05-26T09:00"),
+                createSampleReservation(5, "2025-05-26T20:00")
         };
 
         MergeSort sorter = new MergeSort();
 
         System.out.println("Before sorting:");
         for (int i = 0; i < testReservations.length; i++) {
-            System.out.println((i + 1) + ". " + testReservations[i]);
+            System.out.println((i + 1) + ". " + testReservations[i].toShortString());
         }
 
         SortStatistics stats = sorter.sortWithStatistics(testReservations);
 
         System.out.println("\nAfter sorting:");
         for (int i = 0; i < testReservations.length; i++) {
-            System.out.println((i + 1) + ". " + testReservations[i]);
+            System.out.println((i + 1) + ". " + testReservations[i].toShortString());
         }
 
-        System.out.println("\n" + stats);
+        System.out.println("\n" + stats.getDetailedString());
         System.out.println("Is sorted: " + sorter.isSorted(testReservations));
+    }
+
+    private static Reservation createSampleReservation(int id, String time) {
+        Reservation reservation = new Reservation();
+        reservation.setId(id);
+        reservation.setUserId(100 + id);
+        reservation.setTableId(id);
+        reservation.setReservationTime(time);
+        reservation.setCustomerName("Customer " + id);
+        reservation.setStatus("pending");
+        return reservation;
     }
 }
