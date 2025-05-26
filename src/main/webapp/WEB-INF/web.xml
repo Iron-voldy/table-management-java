@@ -1,0 +1,115 @@
+<web-app
+        xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+        version="5.0">
+
+    <servlet>
+        <servlet-name>MenuServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.MenuServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MenuServlet</servlet-name>
+        <url-pattern>/menu</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddItemServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.AddItemServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddItemServlet</servlet-name>
+        <url-pattern>/addItem</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.RegistrationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <url-pattern>/registration</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ShowUsersServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.ShowUsersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ShowUsersServlet</servlet-name>
+        <url-pattern>/showUsers</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditUserServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.EditUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditUserServlet</servlet-name>
+        <url-pattern>/editUser</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.DeleteUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/deleteUser</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ShowOrdersServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.ShowOrdersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ShowOrdersServlet</servlet-name>
+        <url-pattern>/showOrders</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddOrderServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.AddOrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddOrderServlet</servlet-name>
+        <url-pattern>/addOrder</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditOrderServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.EditOrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditOrderServlet</servlet-name>
+        <url-pattern>/editOrder</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteOrderServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.DeleteOrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteOrderServlet</servlet-name>
+        <url-pattern>/deleteOrder</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserReviewsServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.UserReviewsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserReviewsServlet</servlet-name>
+        <url-pattern>/userReviews</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ReviewServlet</servlet-name>
+        <servlet-class>com.example.restaurant_table_reservation.servlet.ReviewServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReviewServlet</servlet-name>
+        <url-pattern>/reviews</url-pattern>
+    </servlet-mapping>
+
+</web-app>
